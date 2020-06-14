@@ -127,4 +127,26 @@ for bucket in s3_resource.buckets.all():
 
 #objects
 for obj in first_bucket.objects.all():
-      print(obj.key )     
+      print(obj.key)     
+
+for obj in first_bucket.objects.all():
+      subsrc = obj.Object()
+      print(obj.key, obj.storage_class, obj.last_modified,subsrc.version_id, subsrc.metadata)
+
+
+#deleting non empty buckets
+
+def delete_all_objects(bucket_name):
+      res = []
+      bucket=s3_resource.Bucket(bucket_name)
+      for obj_version in bucket.object_versions.all():
+            res.append({'Key': obj_version.object_key,'VersionId': obj_version.id})
+      print(res)
+      bucket.delete_objects(Delete={'Objects': res})
+
+delete_all_objects(first_bucket_name)
+
+s3_resource.Object(second_bucket_name, first_file_name).upload_file(first_file_name)
+delete_all_objects(second_bucket_name)
+s3_resource.Bucket(first_bucket_name).delete()
+s3_resource.Bucket(second_bucket_name).delete()
