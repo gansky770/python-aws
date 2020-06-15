@@ -7,5 +7,4 @@ python
 unzip awscliv2.zip
 sudo ./aws/install###
 5. put the config &cred files in .~/.aws/ folder  (run aws configure >>>its creat  the folder automaticly) ## dir : linux >> ls  ~/.aws  windows: C:\> dir "%UserProfile%\.aws"
-
-docker run -ti -v '$(pwd)':~/.aws  python:latest
+6. insert seckey to file
