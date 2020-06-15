@@ -5,7 +5,7 @@ import logging
 import os
 import re
 ##update config file
-f_r= open('config','r')
+f_r= open('/root/.aws/config','r')
 f_w=open('tmp_file','w')
 for line in f_r:
     if re.search('region',line):
@@ -17,9 +17,9 @@ for line in f_r:
         f_w.writelines(line)    
 f_r.close()
 f_w.close()        
-os.rename('tmp_file','config')
+os.rename('tmp_file','/root/.aws/config')
 #update credentials file
-f_r= open('credentials','r')
+f_r= open('/root/.aws/credentials','r')
 f_w=open('tmp_file','w')
 for line in f_r:
     if re.search('aws_access_key_id',line):
@@ -34,7 +34,7 @@ for line in f_r:
         f_w.writelines(line)    
 f_r.close()
 f_w.close()        
-os.rename('tmp_file','credentials')
+os.rename('tmp_file','/root/.aws/credentials')
 
 ##CREAT BUCKETS
 s3_client = boto3.client('s3')
