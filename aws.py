@@ -2,11 +2,45 @@
 import boto3
 import uuid
 import logging
+import os
+import re
+##update config file
+f_r= open('config','r')
+f_w=open('tmp_file','w')
+for line in f_r:
+    if re.search('region',line):
+        key,value=line.split('=',1)
+        new_line= line.replace(value,input("Please enter you  AWS region: "))
+        f_w.writelines(new_line+'\n')
+        print(new_line)
+    else:
+        f_w.writelines(line)    
+f_r.close()
+f_w.close()        
+os.rename('tmp_file','config')
+#update credentials file
+f_r= open('credentials','r')
+f_w=open('tmp_file','w')
+for line in f_r:
+    if re.search('aws_access_key_id',line):
+        key,value=line.split('=',1)
+        new_line= line.replace(value,input("Please enter you AWS access key id: "))
+        f_w.writelines(new_line+'\n')
+    elif re.search('aws_secret_access_key',line):
+        key,value=line.split('=',1)
+        new_line= line.replace(value,input("Please enter you AWS secret access key: "))
+        f_w.writelines(new_line+'\n')
+    else:
+        f_w.writelines(line)    
+f_r.close()
+f_w.close()        
+os.rename('tmp_file','credentials')
 
+##CREAT BUCKETS
 s3_client = boto3.client('s3')
 s3_resource=boto3.resource('s3')
 
-#create anme for bucket
+#create name for bucket
 def create_bucket_name(bucket_prefix):
     # The generated bucket name must be between 3 and 63 chars long
     return ''.join([bucket_prefix, str(uuid.uuid4())])
